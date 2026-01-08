@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Filipe modz | Elite Modding 2026</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #00ff41; 
+            --primary-glow: rgba(0, 255, 65, 0.4);
+            --gold: #ffcc00;    
+            --gold-glow: rgba(255, 204, 0, 0.4);
+            --dark-bg: #030303;
+            --card-bg: rgba(10, 10, 10, 0.9);
+            --accent-red: #ff3e3e;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 65, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: " ";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            z-index: 4000; background-size: 100% 4px;
+            pointer-events: none; opacity: 0.3;
+        }
+
+        /* --- MENSAGEM DE BOAS-VINDAS (TIMER 6s) --- */
+        #welcome-banner {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px);
+            border: 1px solid var(--primary); padding: 18px 35px; border-radius: 12px;
+            z-index: 8000; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+            animation: slideDownIn 0.5s ease forwards;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        @keyframes slideDownIn { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
+
+        .welcome-timer {
+            position: absolute; bottom: 0; left: 0; height: 3px;
+            background: var(--primary); width: 100%;
+            animation: timerProgress 6s linear forwards;
+            border-radius: 0 0 12px 12px;
+        }
+        @keyframes timerProgress { from { width: 100%; } to { width: 0%; } }
+
+        /* --- TOPBAR NEWS --- */
+        .news-ticker {
+            background: #000; border-bottom: 1px solid var(--primary);
+            padding: 8px 0; font-size: 11px; font-weight: 800;
+            text-transform: uppercase; color: #fff; overflow: hidden;
+            position: sticky; top: 0; z-index: 4500;
+        }
+        .ticker-wrapper { display: flex; animation: ticker 30s linear infinite; white-space: nowrap; }
+        .ticker-item { padding: 0 50px; display: flex; align-items: center; gap: 10px; }
+        .ticker-item b { color: var(--primary); text-shadow: 0 0 5px var(--primary-glow); }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- MENU --- */
+        #nav-menu-btn {
+            position: fixed; top: 50px; left: 20px;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            border: 1px solid var(--primary); color: var(--primary);
+            width: 45px; height: 45px; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 5000; transition: 0.3s;
+        }
+
+        #side-menu {
+            position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
+            background: #050505; z-index: 6000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-right: 2px solid var(--primary); padding: 50px 25px;
+        }
+        #side-menu.active { left: 0; }
+        .menu-close-btn { position: absolute; top: 20px; right: 20px; color: var(--primary); cursor: pointer; transition: 0.3s; }
+        .menu-close-btn:hover { transform: rotate(90deg); color: #fff; }
+
+        .menu-link {
+            padding: 15px; margin-bottom: 10px; border-radius: 4px;
+            display: flex; align-items: center; gap: 15px;
+            cursor: pointer; transition: 0.3s; font-size: 14px; font-weight: 700; color: #888;
+        }
+        .menu-link:hover { color: var(--primary); background: rgba(0, 255, 65, 0.05); }
+
+        /* --- HEADER 3D GTA --- */
+        header { 
+            padding: 140px 20px 100px; text-align: center; 
+            background: linear-gradient(to bottom, transparent, #030303), url('https://i.imgur.com/KzS6C9V.jpg') center/cover;
+            position: relative;
+        }
+
+        .title-3d {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(4rem, 18vw, 10rem);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            font-style: italic;
+            position: relative;
+            display: inline-block;
+            transform: skew(-5deg);
+            text-shadow: 
+                0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 
+                0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 
+                0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 
+                0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 
+                0 20px 20px rgba(0,0,0,.15), 0 0 20px var(--primary-glow);
+            background: linear-gradient(to bottom, #fff 45%, #eee 50%, #ccc 55%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 4px 6px black);
+        }
+
+        /* --- TRUST SECTION --- */
+        .trust-grid {
+            display: flex; justify-content: center; gap: 30px;
+            flex-wrap: wrap; margin: -40px auto 60px; max-width: 1000px;
+            position: relative; z-index: 10;
+        }
+        .trust-item {
+            background: var(--card-bg); border: 1px solid var(--glass-border);
+            padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px;
+            min-width: 250px; backdrop-filter: blur(10px);
+        }
+        .trust-item i { color: var(--primary); }
+
+        /* --- CARDS --- */
+        .grid-container { 
+            max-width: 1300px; margin: 0 auto 80px; padding: 0 25px; 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; 
+        }
+
+        .card { 
+            background: var(--card-bg); border: 1px solid var(--glass-border);
+            border-radius: 24px; overflow: hidden; transition: 0.5s;
+            display: flex; flex-direction: column; position: relative;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); box-shadow: 0 0 30px rgba(0, 255, 65, 0.1); }
+
+        .card-image-box { position: relative; height: 250px; overflow: hidden; }
+        .card-image-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .card:hover .card-image-box img { transform: scale(1.1); }
+
+        .card-body { padding: 35px; text-align: left; }
+        .card-body h2 { font-family: 'Bebas Neue'; font-size: 2.2rem; color: #fff; margin-bottom: 10px; }
+
+        .price-box { display: flex; align-items: baseline; gap: 15px; margin-bottom: 25px; }
+        .price-box .old { color: #555; text-decoration: line-through; font-size: 1.2rem; }
+        .price-box .current { color: var(--primary); font-size: 2.5rem; font-family: 'Bebas Neue'; }
+
+        .btn-toggle-desc { 
+            width: 100%; background: rgba(255,255,255,0.03); color: #888; border: 1px solid #222; 
+            padding: 12px; cursor: pointer; font-family: 'Rajdhani'; font-weight: 700; 
+            font-size: 12px; margin-bottom: 15px; border-radius: 8px;
+        }
+
+        .desc-text { 
+            font-size: 14px; color: #bbb; line-height: 1.7; 
+            background: #000; padding: 20px; border-radius: 12px;
+            border-left: 4px solid var(--primary); margin-bottom: 25px;
+        }
+
+        .btn-action-group { display: grid; grid-template-columns: 1fr 60px; gap: 10px; }
+        .btn-buy-now { 
+            background: var(--primary); color: #000; border: none; padding: 18px; 
+            font-family: 'Bebas Neue'; font-size: 1.5rem; font-weight: 900; 
+            cursor: pointer; border-radius: 12px; transition: 0.3s;
+        }
+        .btn-buy-now:hover { background: #fff; transform: translateY(-3px); }
+
+        .btn-cart-add { 
+            background: transparent; color: var(--primary); border: 1px solid var(--primary); 
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border-radius: 12px; transition: 0.3s;
+        }
+        .btn-cart-add:hover { background: var(--primary); color: #000; }
+
+        /* --- MODALS --- */
+        #cart-modal, #info-modal, #purchase-options-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 7000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
+        .modal-box { background: #080808; width: 100%; max-width: 450px; border: 1px solid var(--glass-border); padding: 40px; border-radius: 24px; text-align: center; position: relative; border-top: 3px solid var(--primary); }
+
+        .btn-purchase-opt {
+            width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #222;
+            background: #111; color: #fff; font-family: 'Rajdhani'; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-purchase-opt:hover { background: #222; border-color: var(--primary); color: var(--primary); transform: scale(1.02); }
+        .btn-purchase-opt i { color: var(--primary); }
+
+        /* --- CARRINHO --- */
+        #cart-icon { 
+            position: fixed; bottom: 30px; right: 30px; background: var(--primary); 
+            color: #000; width: 65px; height: 65px; border-radius: 16px; 
+            display: none; align-items: center; justify-content: center; cursor: pointer; 
+            z-index: 1000; box-shadow: 0 10px 30px var(--primary-glow);
+        }
+        #cart-count { position: absolute; top: -10px; right: -10px; background: #fff; color: #000; width: 28px; height: 28px; border-radius: 8px; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; border: 2px solid var(--primary); }
+
+        footer { padding: 60px 20px; text-align: center; color: #444; font-size: 12px; border-top: 1px solid #111; }
+
+        @media (max-width: 768px) {
+            .trust-grid { gap: 15px; padding: 0 20px; }
+            .trust-item { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="welcome-banner">
+    <i data-lucide="shield-check" color="#00ff41"></i>
+    <span style="font-size: 14px; font-weight: 700; color: #fff; font-family: 'Rajdhani';">
+        ACESSO SEGURO: BEM-VINDO À <span style="color: var(--primary);">Filipe modz 2026</span>.
+    </span>
+    <div class="welcome-timer"></div>
+</div>
+
+<div class="news-ticker">
+    <div class="ticker-wrapper">
+        <div class="ticker-item"><i data-lucide="shield-check" size="14"></i> STATUS: <b>PROTEÇÃO ANTI-BAN 2026 ATIVA</b></div>
+        <div class="ticker-item"><i data-lucide="zap" size="14"></i> ENTREGA: <b>VIA CLOUD EM ATÉ 15 MINUTOS</b></div>
+        <div class="ticker-item"><i data-lucide="verified" size="14"></i> MÉTODO: <b>INJEÇÃO QR CODE (100% SEGURO)</b></div>
+    </div>
+</div>
+
+<div id="nav-menu-btn" onclick="toggleMenu()">
+    <i data-lucide="menu"></i>
+</div>
+
+<div id="side-menu">
+    <div class="menu-close-btn" onclick="toggleMenu()">
+        <i data-lucide="x" size="30"></i>
+    </div>
+    <div style="font-family: 'Bebas Neue'; font-size: 2.5rem; color: var(--primary); margin-bottom: 40px; border-bottom: 2px solid #111;">
+        SUPREME MENU
+    </div>
+    <div class="menu-link" onclick="openInfo('terms')"><i data-lucide="book-open"></i> DIRETRIZES DE USO</div>
+    <div class="menu-link" onclick="openInfo('delivery')"><i data-lucide="zap"></i> MÉTODO DE INJEÇÃO</div>
+    <div class="menu-link" onclick="openInfo('support')"><i data-lucide="headset"></i> SUPORTE E CONTATO</div>
+    <div class="menu-link" style="margin-top: auto; color: var(--accent-red);" onclick="location.reload()"><i data-lucide="log-out"></i> SAIR</div>
+</div>
+
+<header>
+    <h1 class="title-3d">Filipe modz</h1>
+    <p style="color: var(--primary); letter-spacing: 5px; font-weight: 700; margin-top: 15px; text-shadow: 0 0 10px black;">MARKETPLACE OFICIAL PS4/PS5</p>
+</header>
+
+<section class="trust-grid">
+    <div class="trust-item">
+        <i data-lucide="shield-check" size="30"></i>
+        <div>
+            <h4 style="font-size: 14px;">MÉTODO INDETECTÁVEL</h4>
+            <p style="font-size: 11px; color: #666;">Segurança total contra a Rockstar.</p>
+        </div>
+    </div>
+    <div class="trust-item">
+        <i data-lucide="clock" size="30"></i>
+        <div>
+            <h4 style="font-size: 14px;">SUPORTE PRIORITÁRIO</h4>
+            <p style="font-size: 11px; color: #666;">Auxílio especializado 24/7.</p>
+        </div>
+    </div>
+</section>
+
+<main class="grid-container">
+    <div class="card">
+        <div class="card-image-box"><img src="https://i.ibb.co/6RCb7DsV/image.png"></div>
+        <div class="card-body">
+            <h2>STARTER PACK 10M</h2>
+            <div class="price-box"><span class="old">50$</span><span class="current">42$</span></div>
+            <button class="btn-toggle-desc" onclick="toggleDesc(1)">VISUALIZAR DETALHES ↓</button>
+            <div class="expandable-content" id="desc-1" style="display:none;">
+                <p class="desc-text">Economize centenas de horas de grind! Com o Starter Pack, você recebe 10 Milhões de dólares limpos para investir em seus primeiros negócios. <b>Garantia Total:</b> Utilizamos protocolos de injeção indetectáveis pela Rockstar (Update 2026). O melhor custo-benefício para quem quer parar de perder tempo.</p>
+                <div class="btn-action-group">
+                    <button class="btn-buy-now" onclick="openPurchaseOptions('Starter 10M', 42)">COMPRAR</button>
+                    <button class="btn-cart-add" onclick="addToCart('Starter 10M', 42, this)"><i data-lucide="shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-image-box"><img src="https://i.ibb.co/bjssXTtw/image.png"></div>
+        <div class="card-body">
+            <h2>MAGNATA PACK 20M</h2>
+            <div class="price-box"><span class="current">79$</span></div>
+            <button class="btn-toggle-desc" onclick="toggleDesc(2)">VISUALIZAR DETALHES ↓</button>
+            <div class="expandable-content" id="desc-2" style="display:none;">
+                <p class="desc-text">O kit de maior sucesso! Receba 20 Milhões em dinheiro vivo + 5 Carros Deluxo prontos para revenda ou ostentação + 5 Apartamentos de Luxo. <b>Proteção Máxima:</b> Método via QR Code que não exige seus dados de login. Domine Los Santos com a conta turbinada.</p>
+                <div class="btn-action-group">
+                    <button class="btn-buy-now" onclick="openPurchaseOptions('Magnata 20M', 79)">COMPRAR</button>
+                    <button class="btn-cart-add" onclick="addToCart('Magnata 20M', 79, this)"><i data-lucide="shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-vip">
+        <div class="card-image-box"><img src="https://i.ibb.co/yn6MBt2P/image.png"></div>
+        <div class="card-body">
+            <h2>VIP SUPREMO 30M</h2>
+            <div class="price-box"><span class="old">150$</span><span class="current">110$</span></div>
+            <button class="btn-toggle-desc" onclick="toggleDesc(3)">VISUALIZAR DETALHES ↓</button>
+            <div class="expandable-content" id="desc-3" style="display:none;">
+                <p class="desc-text">O auge do modding de elite. Receba 30 Milhões, frota completa de Deluxos, coberturas luxuosas e <b>Suporte VIP Prioritário 24h</b>. Este pacote utiliza injeção via Cloud para garantir invisibilidade total. É o passe livre para ser o patrão da sessão.</p>
+                <div class="btn-action-group">
+                    <button class="btn-buy-now" onclick="openPurchaseOptions('VIP Supremo 30M', 110)">COMPRAR</button>
+                    <button class="btn-cart-add" onclick="addToCart('VIP Supremo 30M', 110, this)"><i data-lucide="shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="cart-icon" onclick="toggleCart()">
+    <i data-lucide="shopping-bag" size="30"></i>
+    <div id="cart-count">0</div>
+</div>
+
+<div id="purchase-options-modal">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 style="font-family: 'Bebas Neue'; font-size: 2.2rem; color: var(--primary); margin-bottom: 25px;">MÉTODO DE COMPRA</h2>
+        <button class="btn-purchase-opt" onclick="confirmPurchaseWhatsApp()"><i data-lucide="message-circle"></i> WHATSAPP (MANUAL)</button>
+        <button class="btn-purchase-opt" onclick="window.open('https://ggmax.com.br/perfil/FilipeModzPS4')"><i data-lucide="external-link"></i> GG MAX (AUTO)</button>
+        <button class="btn-purchase-opt" onclick="window.open('https://desapegogames.com.br/perfil/filipemodzgta')"><i data-lucide="external-link"></i> DESAPEGO GAMES (AUTO)</button>
+        <p onclick="closePurchaseOptions()" style="margin-top: 20px; color: #444; cursor: pointer; font-size: 12px; text-decoration: underline;">CANCELAR</p>
+    </div>
+</div>
+
+<div id="info-modal">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 id="info-title" style="font-family: 'Bebas Neue'; font-size: 2.2rem; color: var(--primary); margin-bottom: 20px;"></h2>
+        <div id="info-text" style="text-align: left; font-size: 14px; color: #ccc; line-height: 1.7; margin-bottom: 20px;"></div>
+        <button class="btn-buy-now" onclick="closeInfo()" style="width: 100%;">ENTENDI / FECHAR</button>
+    </div>
+</div>
+
+<div id="cart-modal">
+    <div class="modal-box">
+        <h2 style="font-family: 'Bebas Neue'; font-size: 2.5rem; color: var(--primary);">CARRINHO</h2>
+        <div id="cart-items" style="margin: 25px 0;"></div>
+        <div style="display:flex; justify-content:space-between; font-size: 1.8rem; font-weight: 800; border-top: 1px solid #222; padding-top: 20px;">
+            <span>TOTAL:</span> <span style="color: var(--primary);">$<span id="cart-total">0</span></span>
+        </div>
+        <button class="btn-buy-now" onclick="finishOrder()" style="width: 100%; margin-top: 25px;">FINALIZAR NO WHATSAPP</button>
+        <p onclick="toggleCart()" style="margin-top: 15px; color: #444; cursor: pointer; font-size: 12px; text-decoration: underline;">VOLTAR PARA A LOJA</p>
+    </div>
+</div>
+
+<footer>
+    <p>Filipe modz © 2026 - MODDING DE ELITE</p>
+</footer>
+
+<script>
+    lucide.createIcons();
+    let cart = [];
+    let selectedForPurchase = null;
+
+    // --- AUTO-FECHAR BANNER BOAS VINDAS APÓS 6 SEG ---
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const wb = document.getElementById('welcome-banner');
+            if(wb) {
+                wb.style.opacity = '0';
+                wb.style.visibility = 'hidden';
+                setTimeout(() => wb.remove(), 800);
+            }
+        }, 6000);
+    });
+
+    function toggleMenu() {
+        document.getElementById('side-menu').classList.toggle('active');
+    }
+
+    const infoData = {
+        terms: {
+            title: "DIRETRIZES E TERMOS",
+            text: "Ao utilizar nosso site, você concorda que:<br>1. Os produtos são entregues via injeção de dados segura.<br>2. Não realizamos reembolsos após a aplicação do método.<br>3. Garantimos proteção absoluta contra detecção Rockstar.<br>4. O suporte prioritário é vitalício para clientes LIPE STORE."
+        },
+        delivery: {
+            title: "MÉTODO DE INJEÇÃO",
+            text: "Após a compra, você recebe instruções no chat de como vamos injetar os métodos + o dinheiro na sua conta. Fique tranquilo, não dá banimento! Damos auxílio de suporte prioritário para qualquer compra conosco."
+        },
+        support: {
+            title: "CANAIS DE SUPORTE",
+            text: `
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <button class="btn-purchase-opt" onclick="window.open('https://wa.me/5516993538190')"><i data-lucide="message-circle"></i> WHATSAPP (OFICIAL)</button>
+                    <button class="btn-purchase-opt" onclick="window.open('https://instagram.com/filipe_modz?igshid=YmMyMTA2M2Y=')"><i data-lucide="instagram"></i> INSTAGRAM</button>
+                    <button class="btn-purchase-opt" onclick="window.open('https://www.facebook.com/profile.php?id=100014753376677&mibextid=ZbWKwL')"><i data-lucide="facebook"></i> FACEBOOK</button>
+                </div>
+            `
+        }
+    };
+
+    function openInfo(key) {
+        document.getElementById('info-title').innerText = infoData[key].title;
+        document.getElementById('info-text').innerHTML = infoData[key].text;
+        document.getElementById('info-modal').style.display = 'flex';
+        document.getElementById('side-menu').classList.remove('active');
+        lucide.createIcons();
+    }
+
+    function closeInfo() { document.getElementById('info-modal').style.display = 'none'; }
+
+    function openPurchaseOptions(name, price) {
+        selectedForPurchase = { name, price };
+        document.getElementById('purchase-options-modal').style.display = 'flex';
+    }
+
+    function closePurchaseOptions() {
+        document.getElementById('purchase-options-modal').style.display = 'none';
+        selectedForPurchase = null;
+    }
+
+    function confirmPurchaseWhatsApp() {
+        if(selectedForPurchase) { directPurchase(selectedForPurchase.name, selectedForPurchase.price); }
+        closePurchaseOptions();
+    }
+
+    function toggleDesc(id) {
+        const desc = document.getElementById(`desc-${id}`);
+        const btn = event.target;
+        desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
+        btn.innerText = desc.style.display === 'block' ? 'FECHAR DETALHES ↑' : 'VISUALIZAR DETALHES ↓';
+    }
+
+    function addToCart(name, price, btn) {
+        cart.push({ id: Date.now(), name, price });
+        updateUI();
+        btn.style.color = "#fff";
+        setTimeout(() => { btn.style.color = "var(--primary)"; }, 800);
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        updateUI();
+    }
+
+    function directPurchase(name, price) {
+        cart = [{ id: Date.now(), name, price }];
+        finishOrder();
+    }
+
+    function updateUI() {
+        const icon = document.getElementById('cart-icon');
+        const count = document.getElementById('cart-count');
+        const totalEl = document.getElementById('cart-total');
+        icon.style.display = cart.length > 0 ? 'flex' : 'none';
+        count.innerText = cart.length;
+        let total = 0;
+        const container = document.getElementById('cart-items');
+        container.innerHTML = "";
+        cart.forEach(item => {
+            total += item.price;
+            container.innerHTML += `
+                <div style="display:flex; justify-content:space-between; margin-bottom: 12px; font-size: 14px;">
+                    <span>${item.name}</span>
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <span>$${item.price}</span>
+                        <i data-lucide="trash-2" size="16" style="color:red; cursor:pointer;" onclick="removeFromCart(${item.id})"></i>
+                    </div>
+                </div>`;
+        });
+        totalEl.innerText = total;
+        lucide.createIcons();
+    }
+
+    function toggleCart() {
+        const modal = document.getElementById('cart-modal');
+        modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function finishOrder() {
+        if(cart.length === 0) return;
+        const orderID = Math.random().toString(36).substring(2, 8).toUpperCase();
+        let text = `🎮 *PEDIDO LIPE STORE #${orderID}*\n\n`;
+        cart.forEach(item => text += `✅ ${item.name} - $${item.price}\n`);
+        text += `\n💰 *TOTAL: $${cart.reduce((a, b) => a + b.price, 0)}*\n\n`;
+        text += `_Desejo receber as instruções de injeção._`;
+        window.location.href = `https://wa.me/5516993538190?text=${encodeURIComponent(text)}`;
+    }
+</script>
+
+</body>
+</html>
