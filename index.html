@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Filipe modz | Elite Modding 2026</title>
+    <title>LIPE STORE | Elite Modding 2026</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -48,6 +48,17 @@
             z-index: 4000; background-size: 100% 4px;
             pointer-events: none; opacity: 0.3;
         }
+
+        /* --- NOTIFICAÇÃO DE VENDA --- */
+        #sale-notification {
+            position: fixed; bottom: 20px; left: 20px;
+            background: rgba(10, 10, 10, 0.95); border-left: 4px solid var(--primary);
+            padding: 12px 20px; border-radius: 8px; z-index: 9999;
+            display: none; align-items: center; gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideInLeft 0.5s ease forwards;
+        }
+        @keyframes slideInLeft { from { transform: translateX(-120%); } to { transform: translateX(0); } }
 
         /* --- MENSAGEM DE BOAS-VINDAS (TIMER 6s) --- */
         #welcome-banner {
@@ -200,17 +211,53 @@
         }
         .btn-cart-add:hover { background: var(--primary); color: #000; }
 
+        /* Botões Especiais de Seleção no Card de Trajes */
+        .outfit-selector { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .opt-btn {
+            background: #111; border: 1px solid #222; color: #fff; padding: 12px;
+            border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600;
+            transition: 0.3s; text-align: left; display: flex; justify-content: space-between; align-items: center;
+        }
+        .opt-btn.active { border-color: var(--primary); background: rgba(0, 255, 65, 0.05); color: var(--primary); }
+
+        /* --- CHATBOT ESTILO WHATSAPP --- */
+        #chatbot-container { position: fixed; bottom: 30px; right: 110px; z-index: 9000; }
+        #chatbot-bubble {
+            width: 65px; height: 65px; background: #25d366; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: 0.3s; border: 2px solid rgba(255,255,255,0.2);
+        }
+        #chatbot-window {
+            position: fixed; bottom: 110px; right: 30px; width: 330px; height: 500px;
+            background: #0f0f0f; border-radius: 20px; display: none; flex-direction: column;
+            border: 1px solid #222; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden;
+        }
+        .chat-header {
+            background: #075e54; padding: 15px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .chat-header-info { display: flex; align-items: center; gap: 10px; }
+        .chat-header img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #0b141a; display: flex; flex-direction: column; gap: 12px; }
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 13px; animation: msgAppear 0.3s ease-out forwards; }
+        @keyframes msgAppear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .msg-bot { background: #202c33; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-user { background: #005c4b; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-footer { padding: 10px; background: #1a1a1a; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 1px solid #333; }
+        .chat-btn { background: #262626; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: 0.2s; text-align: center; }
+        .chat-btn:hover { border-color: var(--primary); background: #333; }
+        .typing { font-size: 11px; color: #aaa; margin-bottom: 5px; display: none; }
+
         /* --- MODALS --- */
-        #cart-modal, #info-modal, #purchase-options-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 7000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
+        #cart-modal, #info-modal, #purchase-options-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 7000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
         .modal-box { background: #080808; width: 100%; max-width: 450px; border: 1px solid var(--glass-border); padding: 40px; border-radius: 24px; text-align: center; position: relative; border-top: 3px solid var(--primary); }
 
         .btn-purchase-opt {
-            width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #222;
+            width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #222;
             background: #111; color: #fff; font-family: 'Rajdhani'; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s;
         }
-        .btn-purchase-opt:hover { background: #222; border-color: var(--primary); color: var(--primary); transform: scale(1.02); }
-        .btn-purchase-opt i { color: var(--primary); }
+        .btn-purchase-opt:hover { background: #1a1a1a; border-color: var(--primary); color: var(--primary); }
 
         /* --- CARRINHO --- */
         #cart-icon { 
@@ -226,6 +273,8 @@
         @media (max-width: 768px) {
             .trust-grid { gap: 15px; padding: 0 20px; }
             .trust-item { min-width: 100%; }
+            #chatbot-container { right: 20px; bottom: 110px; }
+            #chatbot-window { width: 90%; right: 5%; }
         }
     </style>
 </head>
@@ -233,17 +282,25 @@
 
 <div id="welcome-banner">
     <i data-lucide="shield-check" color="#00ff41"></i>
-    <span style="font-size: 14px; font-weight: 700; color: #fff; font-family: 'Rajdhani';">
-        ACESSO SEGURO: BEM-VINDO À <span style="color: var(--primary);">Filipe modz 2026</span>.
+    <span style="font-size: 14px; font-weight: 700; color: #fff;">
+        SISTEMA CRIPTOGRAFADO: BEM-VINDO À <span style="color: var(--primary);">FILIPE MODZ 2026</span>.
     </span>
     <div class="welcome-timer"></div>
 </div>
 
+<div id="sale-notification">
+    <i data-lucide="shopping-cart" color="#00ff41"></i>
+    <div style="font-size: 12px;">
+        <b style="color: #fff;">Novo pedido realizado!</b><br>
+        <span id="sale-item-name" style="color: var(--primary);">Magnata Pack 20M</span>
+    </div>
+</div>
+
 <div class="news-ticker">
     <div class="ticker-wrapper">
-        <div class="ticker-item"><i data-lucide="shield-check" size="14"></i> STATUS: <b>PROTEÇÃO ANTI-BAN 2026 ATIVA</b></div>
-        <div class="ticker-item"><i data-lucide="zap" size="14"></i> ENTREGA: <b>VIA CLOUD EM ATÉ 15 MINUTOS</b></div>
-        <div class="ticker-item"><i data-lucide="verified" size="14"></i> MÉTODO: <b>INJEÇÃO QR CODE (100% SEGURO)</b></div>
+        <div class="ticker-item"><i data-lucide="shield-check" size="14"></i> STATUS: <b>PROTEÇÃO ANTI-BAN ATUALIZADA</b></div>
+        <div class="ticker-item"><i data-lucide="zap" size="14"></i> ENTREGA: <b>QR CODE CLOUD (SEM SENHA)</b></div>
+        <div class="ticker-item"><i data-lucide="users" size="14"></i> CLIENTES ON: <b id="client-count">48</b></div>
     </div>
 </div>
 
@@ -256,17 +313,17 @@
         <i data-lucide="x" size="30"></i>
     </div>
     <div style="font-family: 'Bebas Neue'; font-size: 2.5rem; color: var(--primary); margin-bottom: 40px; border-bottom: 2px solid #111;">
-        SUPREME MENU
+        TERMINAL MENU
     </div>
     <div class="menu-link" onclick="openInfo('terms')"><i data-lucide="book-open"></i> DIRETRIZES DE USO</div>
     <div class="menu-link" onclick="openInfo('delivery')"><i data-lucide="zap"></i> MÉTODO DE INJEÇÃO</div>
     <div class="menu-link" onclick="openInfo('support')"><i data-lucide="headset"></i> SUPORTE E CONTATO</div>
-    <div class="menu-link" style="margin-top: auto; color: var(--accent-red);" onclick="location.reload()"><i data-lucide="log-out"></i> SAIR</div>
+    <div class="menu-link" style="margin-top: auto; color: var(--accent-red);" onclick="location.reload()"><i data-lucide="log-out"></i> SAIR DA SESSÃO</div>
 </div>
 
 <header>
-    <h1 class="title-3d">Filipe modz</h1>
-    <p style="color: var(--primary); letter-spacing: 5px; font-weight: 700; margin-top: 15px; text-shadow: 0 0 10px black;">MARKETPLACE OFICIAL PS4/PS5</p>
+    <h1 class="title-3d">LIPE STORE</h1>
+    <p style="color: var(--primary); letter-spacing: 5px; font-weight: 700; margin-top: 15px; text-shadow: 0 0 10px black;">MODDING DE ELITE PARA PS4 & PS5</p>
 </header>
 
 <section class="trust-grid">
@@ -292,11 +349,11 @@
         <div class="card-body">
             <h2>STARTER PACK 10M</h2>
             <div class="price-box"><span class="old">50$</span><span class="current">42$</span></div>
-            <button class="btn-toggle-desc" onclick="toggleDesc(1)">VISUALIZAR DETALHES ↓</button>
+            <button class="btn-toggle-desc" onclick="toggleDesc(1)">LER ESPECIFICAÇÕES ↓</button>
             <div class="expandable-content" id="desc-1" style="display:none;">
-                <p class="desc-text">Economize centenas de horas de grind! Com o Starter Pack, você recebe 10 Milhões de dólares limpos para investir em seus primeiros negócios. <b>Garantia Total:</b> Utilizamos protocolos de injeção indetectáveis pela Rockstar (Update 2026). O melhor custo-benefício para quem quer parar de perder tempo.</p>
+                <p class="desc-text">Inicie sua trajetória criminosa no topo! O Starter Pack injeta 10 Milhões de dólares limpos via Cloud Sync. <b>100% Indetectável</b>.</p>
                 <div class="btn-action-group">
-                    <button class="btn-buy-now" onclick="openPurchaseOptions('Starter 10M', 42)">COMPRAR</button>
+                    <button class="btn-buy-now" onclick="openPurchaseOptions('Starter 10M', 42)">COMPRAR AGORA</button>
                     <button class="btn-cart-add" onclick="addToCart('Starter 10M', 42, this)"><i data-lucide="shopping-cart"></i></button>
                 </div>
             </div>
@@ -308,54 +365,118 @@
         <div class="card-body">
             <h2>MAGNATA PACK 20M</h2>
             <div class="price-box"><span class="current">79$</span></div>
-            <button class="btn-toggle-desc" onclick="toggleDesc(2)">VISUALIZAR DETALHES ↓</button>
+            <button class="btn-toggle-desc" onclick="toggleDesc(2)">LER ESPECIFICAÇÕES ↓</button>
             <div class="expandable-content" id="desc-2" style="display:none;">
-                <p class="desc-text">O kit de maior sucesso! Receba 20 Milhões em dinheiro vivo + 5 Carros Deluxo prontos para revenda ou ostentação + 5 Apartamentos de Luxo. <b>Proteção Máxima:</b> Método via QR Code que não exige seus dados de login. Domine Los Santos com a conta turbinada.</p>
+                <p class="desc-text">O kit de maior sucesso! Receba 20 Milhões em cash + 5 Carros Deluxo + 5 Apartamentos de Luxo. Ideal para quem quer ostentar poder.</p>
                 <div class="btn-action-group">
-                    <button class="btn-buy-now" onclick="openPurchaseOptions('Magnata 20M', 79)">COMPRAR</button>
+                    <button class="btn-buy-now" onclick="openPurchaseOptions('Magnata 20M', 79)">COMPRAR AGORA</button>
                     <button class="btn-cart-add" onclick="addToCart('Magnata 20M', 79, this)"><i data-lucide="shopping-cart"></i></button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-image-box">
+            <img src="https://i.ibb.co/yn6MBt2P/image.png">
+        </div>
 
-    <div class="card card-vip">
-        <div class="card-image-box"><img src="https://i.ibb.co/yn6MBt2P/image.png"></div>
         <div class="card-body">
             <h2>VIP SUPREMO 30M</h2>
-            <div class="price-box"><span class="old">150$</span><span class="current">110$</span></div>
+            <div class="price-box">
+                <span class="old">150$</span>
+                <span class="current">110$</span>
+            </div>
+
             <button class="btn-toggle-desc" onclick="toggleDesc(3)">VISUALIZAR DETALHES ↓</button>
+
             <div class="expandable-content" id="desc-3" style="display:none;">
-                <p class="desc-text">O auge do modding de elite. Receba 30 Milhões, frota completa de Deluxos, coberturas luxuosas e <b>Suporte VIP Prioritário 24h</b>. Este pacote utiliza injeção via Cloud para garantir invisibilidade total. É o passe livre para ser o patrão da sessão.</p>
-                <div class="btn-action-group">
+                <p class="desc-text">
+                    O auge do modding de elite. Receba 30 Milhões, frota completa de Deluxos, coberturas luxuosas e <b>Suporte VIP Prioritário 24h</b>. 
+                    Este pacote utiliza injeção via Cloud para garantir invisibilidade total. É o passe livre para ser o patrão da sessão.
+                </p>
+                <div class="btn-action-group" style="display:grid; grid-template-columns: 1fr 60px; gap:10px;">
                     <button class="btn-buy-now" onclick="openPurchaseOptions('VIP Supremo 30M', 110)">COMPRAR</button>
-                    <button class="btn-cart-add" onclick="addToCart('VIP Supremo 30M', 110, this)"><i data-lucide="shopping-cart"></i></button>
+                    <button class="btn-cart-add" onclick="addToCart('VIP Supremo 30M', 110, this)" style="background:transparent; border:1px solid var(--primary); border-radius:12px; color:var(--primary); display:flex; align-items:center; justify-content:center;">
+                        <i data-lucide="shopping-cart"></i>
+                    </button>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-image-box"><img src="https://i.ibb.co/TBzQStCw/image.jpg"></div>
+        <div class="card-body">
+            <h2>PACK TRAJES MODDED</h2>
+            <div class="price-box">
+                <span id="outfit-old-price" class="old">50$</span>
+                <span id="outfit-current-price" class="current">35$</span>
+            </div>
+            <div class="outfit-selector">
+                <button class="opt-btn active" onclick="selectOutfit(this, '1 Traje Mod', 35, 50, 'basic')">
+                    <span>1 TRAJE INDIVIDUAL PREMIUM</span> <b>$35</b>
+                </button>
+                <button class="opt-btn" onclick="selectOutfit(this, '5 Trajes Mod', 150, 180, 'vip')">
+                    <span>5 TRAJES VIP + BRINDE</span> <b>$150</b>
+                </button>
+                <button class="opt-btn" onclick="selectOutfit(this, '10 Trajes Mod', 250, 0, 'supreme')">
+                    <span>10 TRAJES SUPREMO (GOD)</span> <b>$250</b>
+                </button>
+            </div>
+            <div class="expandable-content" id="desc-outfit" style="display:none;">
+                <div id="outfit-dynamic-text" class="desc-text"></div>
+                <button class="btn-buy-now" onclick="buyOutfit()">COMPRAR VIA WHATSAPP</button>
+                <button class="btn-toggle-desc" style="margin-top:10px;" onclick="closeOutfitDesc()">FECHAR DETALHES ↑</button>
             </div>
         </div>
     </div>
 </main>
 
-<div id="cart-icon" onclick="toggleCart()">
-    <i data-lucide="shopping-bag" size="30"></i>
-    <div id="cart-count">0</div>
+<div id="chatbot-container">
+    <div id="chatbot-bubble" onclick="toggleChatBot()"><i data-lucide="message-circle" color="#fff" size="35"></i></div>
+    <div id="chatbot-window">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png">
+                <div>
+                    <div style="font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 5px;">LIPE BOT <i data-lucide="verified" size="14" color="#00ff41" fill="#00ff41"></i></div>
+                    <div style="font-size: 10px; color: #00ff41;">Online Agora</div>
+                </div>
+            </div>
+            <i data-lucide="x" size="20" style="cursor:pointer;" onclick="toggleChatBot()"></i>
+        </div>
+        <div class="chat-body" id="chat-content">
+            <div class="msg msg-bot">Olá! Sou o assistente inteligente da Lipe Store. 🤖<br><br>Como posso te ajudar hoje? Escolha uma opção abaixo:</div>
+        </div>
+        <div id="typing-indicator" class="typing" style="padding: 10px; font-size: 11px; display:none; color:#aaa; font-style:italic; margin-left:15px;">Bot está digitando...</div>
+        <div class="chat-footer">
+            <button class="chat-btn" onclick="botAction('terms')">📄 Termos</button>
+            <button class="chat-btn" onclick="botAction('delivery')">⚡ Entrega</button>
+            <button class="chat-btn" onclick="botAction('safe')">🛡️ É Seguro?</button>
+            <button class="chat-btn" onclick="botAction('time')">⏰ Prazos</button>
+            <button class="chat-btn" onclick="botAction('manual_buy')">💰 Compra Manual</button>
+            <button class="chat-btn" style="background:#075e54; color:#fff;" onclick="botAction('human')">👤 Falar c/ Humano</button>
+        </div>
+    </div>
 </div>
 
+<div id="cart-icon" onclick="toggleCart()"><i data-lucide="shopping-bag" size="30"></i><div id="cart-count">0</div></div>
+
 <div id="purchase-options-modal">
-    <div class="modal-box" onclick="event.stopPropagation()">
-        <h2 style="font-family: 'Bebas Neue'; font-size: 2.2rem; color: var(--primary); margin-bottom: 25px;">MÉTODO DE COMPRA</h2>
+    <div class="modal-box">
+        <h2 style="font-family: 'Bebas Neue'; font-size: 2.2rem; color: var(--primary); margin-bottom: 25px;">MÉTODO DE PAGAMENTO</h2>
         <button class="btn-purchase-opt" onclick="confirmPurchaseWhatsApp()"><i data-lucide="message-circle"></i> WHATSAPP (MANUAL)</button>
-        <button class="btn-purchase-opt" onclick="window.open('https://ggmax.com.br/perfil/FilipeModzPS4')"><i data-lucide="external-link"></i> GG MAX (AUTO)</button>
-        <button class="btn-purchase-opt" onclick="window.open('https://desapegogames.com.br/perfil/filipemodzgta')"><i data-lucide="external-link"></i> DESAPEGO GAMES (AUTO)</button>
-        <p onclick="closePurchaseOptions()" style="margin-top: 20px; color: #444; cursor: pointer; font-size: 12px; text-decoration: underline;">CANCELAR</p>
+        <button class="btn-purchase-opt" onclick="window.open('https://ggmax.com.br/perfil/FilipeModzPS4')"><i data-lucide="shopping-bag"></i> COMPRA AUTOMÁTICA GG MAX</button>
+        <button class="btn-purchase-opt" onclick="window.open('https://desapegogames.com.br/perfil/filipemodzgta')"><i data-lucide="gamepad"></i> DESAPEGO GAMES (AUTO)</button>
+        <p onclick="closePurchaseOptions()" style="margin-top: 20px; color: #444; cursor: pointer; text-decoration: underline;">CANCELAR</p>
     </div>
 </div>
 
 <div id="info-modal">
-    <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-box">
         <h2 id="info-title" style="font-family: 'Bebas Neue'; font-size: 2.2rem; color: var(--primary); margin-bottom: 20px;"></h2>
-        <div id="info-text" style="text-align: left; font-size: 14px; color: #ccc; line-height: 1.7; margin-bottom: 20px;"></div>
-        <button class="btn-buy-now" onclick="closeInfo()" style="width: 100%;">ENTENDI / FECHAR</button>
+        <div id="info-text"></div>
+        <button class="btn-buy-now" onclick="closeInfo()" style="margin-top: 25px;">FECHAR</button>
     </div>
 </div>
 
@@ -366,55 +487,50 @@
         <div style="display:flex; justify-content:space-between; font-size: 1.8rem; font-weight: 800; border-top: 1px solid #222; padding-top: 20px;">
             <span>TOTAL:</span> <span style="color: var(--primary);">$<span id="cart-total">0</span></span>
         </div>
-        <button class="btn-buy-now" onclick="finishOrder()" style="width: 100%; margin-top: 25px;">FINALIZAR NO WHATSAPP</button>
-        <p onclick="toggleCart()" style="margin-top: 15px; color: #444; cursor: pointer; font-size: 12px; text-decoration: underline;">VOLTAR PARA A LOJA</p>
+        <button class="btn-buy-now" onclick="finishOrder()" style="margin-top: 25px;">FINALIZAR PEDIDO</button>
+        <p onclick="toggleCart()" style="margin-top: 15px; color: #444; cursor: pointer;">VOLTAR À LOJA</p>
     </div>
 </div>
 
-<footer>
-    <p>Filipe modz © 2026 - MODDING DE ELITE</p>
-</footer>
+<footer><p>LIPE STORE © 2026 - MODDING DE ELITE • PROTEÇÃO ANTI-BAN VIRTUAL</p></footer>
 
 <script>
     lucide.createIcons();
     let cart = [];
     let selectedForPurchase = null;
+    let currentOutfit = { name: "1 Traje Mod", price: 35 };
 
-    // --- AUTO-FECHAR BANNER BOAS VINDAS APÓS 6 SEG ---
+    const outfitDescs = {
+        basic: "<b>Individual Premium:</b> Traje com componentes raros no PS4/PS5.",
+        vip: "<b>Pack VIP (5 Trajes):</b> 5 trajes modded + Máscara Rara de brinde.",
+        supreme: "<b>Pack Supreme (10 Trajes):</b> Domínio total do estilo e suporte vitalício."
+    };
+
+    // --- NOTIFICAÇÕES DE VENDAS ---
+    const products = ["Magnata Pack", "VIP Supremo", "Pack 10 Trajes", "Starter Pack"];
+    setInterval(() => {
+        if(Math.random() > 0.7) {
+            const toast = document.getElementById('sale-notification');
+            document.getElementById('sale-item-name').innerText = products[Math.floor(Math.random()*products.length)];
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        }
+    }, 15000);
+
+    // --- BANNER BOAS VINDAS ---
     window.addEventListener('load', () => {
         setTimeout(() => {
             const wb = document.getElementById('welcome-banner');
-            if(wb) {
-                wb.style.opacity = '0';
-                wb.style.visibility = 'hidden';
-                setTimeout(() => wb.remove(), 800);
-            }
+            if(wb) wb.style.display = 'none';
         }, 6000);
     });
 
-    function toggleMenu() {
-        document.getElementById('side-menu').classList.toggle('active');
-    }
+    function toggleMenu() { document.getElementById('side-menu').classList.toggle('active'); }
 
     const infoData = {
-        terms: {
-            title: "DIRETRIZES E TERMOS",
-            text: "Ao utilizar nosso site, você concorda que:<br>1. Os produtos são entregues via injeção de dados segura.<br>2. Não realizamos reembolsos após a aplicação do método.<br>3. Garantimos proteção absoluta contra detecção Rockstar.<br>4. O suporte prioritário é vitalício para clientes LIPE STORE."
-        },
-        delivery: {
-            title: "MÉTODO DE INJEÇÃO",
-            text: "Após a compra, você recebe instruções no chat de como vamos injetar os métodos + o dinheiro na sua conta. Fique tranquilo, não dá banimento! Damos auxílio de suporte prioritário para qualquer compra conosco."
-        },
-        support: {
-            title: "CANAIS DE SUPORTE",
-            text: `
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <button class="btn-purchase-opt" onclick="window.open('https://wa.me/5516993538190')"><i data-lucide="message-circle"></i> WHATSAPP (OFICIAL)</button>
-                    <button class="btn-purchase-opt" onclick="window.open('https://instagram.com/filipe_modz?igshid=YmMyMTA2M2Y=')"><i data-lucide="instagram"></i> INSTAGRAM</button>
-                    <button class="btn-purchase-opt" onclick="window.open('https://www.facebook.com/profile.php?id=100014753376677&mibextid=ZbWKwL')"><i data-lucide="facebook"></i> FACEBOOK</button>
-                </div>
-            `
-        }
+        terms: { title: "DIRETRIZES E TERMOS", text: "<div style='text-align:left; color:#bbb; font-size:14px;'>1. Entrega garantida via Cloud Injeção.<br>2. Garantia vitalícia contra detecção.<br>3. Sem reembolso após aplicação.<br>4. Suporte 24/7 para clientes.</div>" },
+        delivery: { title: "MÉTODO DE ENTREGA", text: "<p style='text-align:left; color:#bbb;'>Após a compra, você receberá um link seguro. Nossa equipe fará a injeção dos itens diretamente no seu inventário via nuvem. O processo é rápido e 100% seguro.</p>" },
+        support: { title: "CANAIS OFICIAIS", text: `<div style="display:flex; flex-direction:column; gap:10px;"><button class="btn-purchase-opt" onclick="window.open('https://wa.me/5516993538190')"><i data-lucide="message-circle"></i> WHATSAPP</button><button class="btn-purchase-opt" onclick="window.open('https://instagram.com/filipe_modz')"><i data-lucide="instagram"></i> INSTAGRAM</button><button class="btn-purchase-opt" onclick="window.open('https://www.facebook.com/profile.php?id=100014753376677')"><i data-lucide="facebook"></i> FACEBOOK</button></div>` }
     };
 
     function openInfo(key) {
@@ -426,82 +542,89 @@
     }
 
     function closeInfo() { document.getElementById('info-modal').style.display = 'none'; }
+    function openPurchaseOptions(name, price) { selectedForPurchase = { name, price }; document.getElementById('purchase-options-modal').style.display = 'flex'; }
+    function closePurchaseOptions() { document.getElementById('purchase-options-modal').style.display = 'none'; }
+    function confirmPurchaseWhatsApp() { if(selectedForPurchase) directPurchase(selectedForPurchase.name, selectedForPurchase.price); closePurchaseOptions(); }
 
-    function openPurchaseOptions(name, price) {
-        selectedForPurchase = { name, price };
-        document.getElementById('purchase-options-modal').style.display = 'flex';
+    function selectOutfit(btn, name, price, oldPrice, type) {
+        document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentOutfit = { name, price };
+        document.getElementById('outfit-current-price').innerText = price + "$";
+        document.getElementById('outfit-old-price').innerText = oldPrice ? oldPrice + "$" : "";
+        document.getElementById('outfit-dynamic-text').innerHTML = outfitDescs[type] + "<br><br><i>Equipe faz seu traje no mesmo dia!</i>";
+        document.getElementById('desc-outfit').style.display = 'block';
     }
 
-    function closePurchaseOptions() {
-        document.getElementById('purchase-options-modal').style.display = 'none';
-        selectedForPurchase = null;
+    function closeOutfitDesc() { document.getElementById('desc-outfit').style.display = 'none'; document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active')); }
+    function buyOutfit() { window.location.href = `https://wa.me/5516993538190?text=Olá! Desejo o pacote: ${currentOutfit.name} ($${currentOutfit.price})`; }
+
+    // --- LÓGICA DO CHATBOT ATUALIZADA ---
+    function toggleChatBot() { const win = document.getElementById('chatbot-window'); win.style.display = win.style.display === 'flex' ? 'none' : 'flex'; }
+
+    function botAction(type) {
+        const content = document.getElementById('chat-content');
+        const typing = document.getElementById('typing-indicator');
+        let userMsg = "";
+        let botMsg = "";
+        let redirectURL = "";
+
+        if(type === 'terms') { userMsg = "📄 Termos do Site"; botMsg = "Nossos termos garantem proteção total. Não há risco de banimento e a entrega é garantida em até 24h."; }
+        if(type === 'delivery') { userMsg = "⚡ Método de Entrega"; botMsg = "Usamos injeção via QR Code Cloud. Você não precisa passar sua senha! Tudo é feito via sincronização segura."; }
+        if(type === 'safe') { userMsg = "🛡️ É seguro mesmo?"; botMsg = "Com certeza! Nosso método é 100% Anti-Ban e testado diariamente na atualização 2026."; }
+        if(type === 'time') { userMsg = "⏰ Qual o prazo?"; botMsg = "O tempo médio de conclusão é de 15 a 40 minutos após o início do procedimento."; }
+
+        if(type === 'manual_buy') {
+            userMsg = "💰 Compra Manual";
+            botMsg = "Para realizar a compra manual via **Pix** ou **Cartão**, escolha o pacote no site e finalize pelo WhatsApp ou me chame clicando em 'Falar c/ Humano'. Aceitamos pagamentos imediatos!";
+        }
+
+        if(type === 'human') {
+            const ticketID = Math.floor(100000 + Math.random() * 900000);
+            userMsg = "👤 Falar com Humano";
+            botMsg = `Gerando seu Ticket de Suporte... 🛠️<br><br>Ticket: **#${ticketID}**<br>Redirecionando para o suporte humano no WhatsApp...`;
+            redirectURL = `https://wa.me/5516993538190?text=${encodeURIComponent(`🎫 TICKET DE SUPORTE #${ticketID}: Tenho dúvidas sobre os produtos e gostaria de auxílio.`)}`;
+        }
+
+        content.innerHTML += `<div class="msg msg-user">${userMsg}</div>`;
+        content.scrollTop = content.scrollHeight;
+        typing.style.display = 'block';
+
+        setTimeout(() => {
+            typing.style.display = 'none';
+            content.innerHTML += `<div class="msg msg-bot">${botMsg}</div>`;
+            content.scrollTop = content.scrollHeight;
+            if(redirectURL) {
+                setTimeout(() => window.open(redirectURL, '_blank'), 2000);
+            }
+        }, 1200);
     }
 
-    function confirmPurchaseWhatsApp() {
-        if(selectedForPurchase) { directPurchase(selectedForPurchase.name, selectedForPurchase.price); }
-        closePurchaseOptions();
-    }
-
-    function toggleDesc(id) {
-        const desc = document.getElementById(`desc-${id}`);
-        const btn = event.target;
-        desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
-        btn.innerText = desc.style.display === 'block' ? 'FECHAR DETALHES ↑' : 'VISUALIZAR DETALHES ↓';
-    }
-
-    function addToCart(name, price, btn) {
-        cart.push({ id: Date.now(), name, price });
-        updateUI();
-        btn.style.color = "#fff";
-        setTimeout(() => { btn.style.color = "var(--primary)"; }, 800);
-    }
-
-    function removeFromCart(id) {
-        cart = cart.filter(item => item.id !== id);
-        updateUI();
-    }
-
-    function directPurchase(name, price) {
-        cart = [{ id: Date.now(), name, price }];
-        finishOrder();
-    }
+    function toggleDesc(id) { const desc = document.getElementById(`desc-${id}`); desc.style.display = desc.style.display === 'block' ? 'none' : 'block'; event.target.innerText = desc.style.display === 'block' ? 'FECHAR ESPECIFICAÇÕES ↑' : 'LER ESPECIFICAÇÕES ↓'; }
+    function addToCart(name, price, btn) { cart.push({ id: Date.now(), name, price }); updateUI(); btn.style.color = "#fff"; setTimeout(() => { btn.style.color = "var(--primary)"; }, 800); }
+    function removeFromCart(id) { cart = cart.filter(item => item.id !== id); updateUI(); }
+    function directPurchase(name, price) { cart = [{ id: Date.now(), name, price }]; finishOrder(); }
 
     function updateUI() {
         const icon = document.getElementById('cart-icon');
-        const count = document.getElementById('cart-count');
         const totalEl = document.getElementById('cart-total');
         icon.style.display = cart.length > 0 ? 'flex' : 'none';
-        count.innerText = cart.length;
+        document.getElementById('cart-count').innerText = cart.length;
         let total = 0;
         const container = document.getElementById('cart-items');
         container.innerHTML = "";
-        cart.forEach(item => {
-            total += item.price;
-            container.innerHTML += `
-                <div style="display:flex; justify-content:space-between; margin-bottom: 12px; font-size: 14px;">
-                    <span>${item.name}</span>
-                    <div style="display:flex; gap:15px; align-items:center;">
-                        <span>$${item.price}</span>
-                        <i data-lucide="trash-2" size="16" style="color:red; cursor:pointer;" onclick="removeFromCart(${item.id})"></i>
-                    </div>
-                </div>`;
-        });
+        cart.forEach(item => { total += item.price; container.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom: 12px;"><span>${item.name}</span><div style="display:flex; gap:15px;"><span>$${item.price}</span><i data-lucide="trash-2" size="16" style="color:red; cursor:pointer;" onclick="removeFromCart(${item.id})"></i></div></div>`; });
         totalEl.innerText = total;
         lucide.createIcons();
     }
 
-    function toggleCart() {
-        const modal = document.getElementById('cart-modal');
-        modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-    }
-
+    function toggleCart() { const modal = document.getElementById('cart-modal'); modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex'; }
     function finishOrder() {
         if(cart.length === 0) return;
         const orderID = Math.random().toString(36).substring(2, 8).toUpperCase();
         let text = `🎮 *PEDIDO LIPE STORE #${orderID}*\n\n`;
         cart.forEach(item => text += `✅ ${item.name} - $${item.price}\n`);
-        text += `\n💰 *TOTAL: $${cart.reduce((a, b) => a + b.price, 0)}*\n\n`;
-        text += `_Desejo receber as instruções de injeção._`;
+        text += `\n💰 *TOTAL: $${cart.reduce((a, b) => a + b.price, 0)}*`;
         window.location.href = `https://wa.me/5516993538190?text=${encodeURIComponent(text)}`;
     }
 </script>
