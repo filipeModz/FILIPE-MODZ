@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -315,6 +315,7 @@
     <div style="font-family: 'Bebas Neue'; font-size: 2.5rem; color: var(--primary); margin-bottom: 40px; border-bottom: 2px solid #111;">
         TERMINAL MENU
     </div>
+    <div class="menu-link" onclick="openInfo('creator')"><i data-lucide="code"></i> CRIADOR</div>
     <div class="menu-link" onclick="openInfo('terms')"><i data-lucide="book-open"></i> DIRETRIZES DE USO</div>
     <div class="menu-link" onclick="openInfo('delivery')"><i data-lucide="zap"></i> MÉTODO DE INJEÇÃO</div>
     <div class="menu-link" onclick="openInfo('support')"><i data-lucide="headset"></i> SUPORTE E CONTATO</div>
@@ -403,7 +404,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="card">
         <div class="card-image-box"><img src="https://i.ibb.co/TBzQStCw/image.jpg"></div>
         <div class="card-body">
@@ -528,6 +529,20 @@
     function toggleMenu() { document.getElementById('side-menu').classList.toggle('active'); }
 
     const infoData = {
+        // CONTEÚDO DA OPÇÃO CRIADOR
+        creator: { 
+            title: "DESENVOLVEDOR", 
+            text: `
+                <p style="text-align:left; color:#bbb; margin-bottom: 20px;">
+                    Este projeto foi desenvolvido com foco em performance e segurança. Conheça mais sobre o trabalho do criador nos links abaixo:
+                </p>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <button class="btn-purchase-opt" onclick="window.open('https://youtube.com/@apelawar_yt?si=aiy_SK6ToysgzZw4')"><i data-lucide="youtube"></i> YOUTUBE</button>
+                    <button class="btn-purchase-opt" onclick="window.open('https://wa.me/5532984660603')"><i data-lucide="message-circle"></i> WHATSAPP</button>
+                    <button class="btn-purchase-opt" onclick="window.open('https://t.me/ApelaWar71')"><i data-lucide="send"></i> TELEGRAM</button>
+                </div>
+            ` 
+        },
         terms: { title: "DIRETRIZES E TERMOS", text: "<div style='text-align:left; color:#bbb; font-size:14px;'>1. Entrega garantida via Cloud Injeção.<br>2. Garantia vitalícia contra detecção.<br>3. Sem reembolso após aplicação.<br>4. Suporte 24/7 para clientes.</div>" },
         delivery: { title: "MÉTODO DE ENTREGA", text: "<p style='text-align:left; color:#bbb;'>Após a compra, você receberá um link seguro. Nossa equipe fará a injeção dos itens diretamente no seu inventário via nuvem. O processo é rápido e 100% seguro.</p>" },
         support: { title: "CANAIS OFICIAIS", text: `<div style="display:flex; flex-direction:column; gap:10px;"><button class="btn-purchase-opt" onclick="window.open('https://wa.me/5516993538190')"><i data-lucide="message-circle"></i> WHATSAPP</button><button class="btn-purchase-opt" onclick="window.open('https://instagram.com/filipe_modz')"><i data-lucide="instagram"></i> INSTAGRAM</button><button class="btn-purchase-opt" onclick="window.open('https://www.facebook.com/profile.php?id=100014753376677')"><i data-lucide="facebook"></i> FACEBOOK</button></div>` }
